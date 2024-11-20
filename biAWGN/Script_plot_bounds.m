@@ -6,18 +6,17 @@ addpath('biAWGN_functions')
 R = 1/2; % rate (in BPCU)
 if(R == 1/2)
    k_vec = [24:8:125] ; % number of information bits
-   % k_vec = 60 ; 
 else
    k_vec = [18:6:104] ; 
 end
 snrdB_vec_init = [-1,10] ; 
 
-METHOD_SEL = 1; % 1: Theorem 2 (CRC bound), 2: Forney's bound, 3: Theorem 3 (Threshold RCU bound), 4: Normal Approx. 
+METHOD_SEL = 3; % 1: Theorem 2 (CRC bound), 2: Forney's bound, 3: Theorem 3 (Threshold RCU bound), 4: Normal Approx. 
 
 UER_target = 1e-5 ; 
 FER_target = 1e-3 ; 
 n_vec = round(k_vec./R); % blocklength n = k./R. 
-N = round(10*(1./UER_target)); % Number of samples to be used in MC simulations (Only relevant for METHOD_SEL=3)
+N = round(20*(1./UER_target)); % Number of samples to be used in MC simulations (Only relevant for METHOD_SEL=3)
 
 for rr = 1:length(n_vec) 
    tic
@@ -52,7 +51,7 @@ for rr = 1:length(n_vec)
          T_vec = linspace(-1.5,1.5,32) ; % Threshold (\lambda in the paper)
          T_vec = [-5:-2, T_vec, 2] ;  
          s_vec = [0.6 : 0.2 : 2.4] ; 
-         % If you want a faster simulation to run uncomment UER_RCU_Saddlepoint_fixedTauHighData and comment UER_RCU_Saddlepoint_fixedTau
+         % If you want a faster simulation uncomment UER_RCU_Saddlepoint_fixedTauHighData and comment UER_RCU_Saddlepoint_fixedTau
          % [eps_UER, eps_FER] = UER_RCU_Saddlepoint_fixedTauHighData(snr,n,R,N,T_vec) ;
          [eps_UER, eps_FER]  = UER_RCU_Saddlepoint_fixedTau(snr,n,R,N,T_vec,s_vec) ; 
          xAxis = T_vec ; 
